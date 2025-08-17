@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- state pressed -->
+    <item android:state_pressed="true"
+        android:drawable="@drawable/ic_microphone_pressed"/>
+
+    <item android:state_active="true"
+        android:drawable="@drawable/ic_microphone_active"/>
+
+    <item android:state_activated="true"
+        android:drawable="@drawable/ic_microphone_active"/>
+
+    <!-- state default -->
+    <item android:drawable="@drawable/ic_microphone"/>
+</selector>

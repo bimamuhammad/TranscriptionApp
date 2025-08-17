@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- This shape is for the button's default, unpressed state. -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+
+    <!-- Sets the solid color of the button. -->
+    <solid android:color="#4A90E2" />
+
+    <!-- Defines the rounded corners. -->
+    <corners android:radius="12dp" />
+
+    <!-- Adds a border (optional). -->
+    <stroke
+        android:width="2dp"
+        android:color="#357ABD" />
+</shape>
