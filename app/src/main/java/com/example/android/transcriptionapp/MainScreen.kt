@@ -8,9 +8,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import android.widget.EditText
+import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.navigation.fragment.findNavController
 import com.example.android.transcriptionapp.databinding.FragmentFirstBinding
 import org.w3c.dom.Text
+import java.io.File
+import java.io.FileOutputStream
 
 /**
  * A simple [Fragment] subclass as the default destination in the navigation.
@@ -34,12 +39,49 @@ class MainScreen : Fragment() {
             view.isActivated = !view.isActivated
         }
 
+        val saveBtn = binding.saveBtn
+        saveBtn.setOnClickListener{_ -> saveText()}
+
         val shareButton = binding.shareBtn
         shareButton.setOnClickListener{_-> shareText()}
         return binding.root
 
     }
 
+    private fun saveText(){
+        val dialogView = LayoutInflater.from(context).inflate(R.layout.save_file_dialog, null)
+        val text = binding.editTextTextMultiLine.text.toString().trim()
+        val fileNameEditText = dialogView.findViewById<EditText>(R.id.filename_edit_text)
+        displayToast(text)
+        AlertDialog.Builder(requireContext())
+            .setTitle("Save File")
+            .setView(dialogView)
+            .setPositiveButton("Save") {dialog, _ ->
+                val filename = fileNameEditText.text.toString().trim()
+                if(filename.isNotEmpty()){
+                    val file = File(requireContext().filesDir, filename)
+                    try {
+                        FileOutputStream(file).use { it->
+                            it.write(text.toByteArray())
+                            displayToast("Success")
+                        }
+                    } catch (e: Exception){
+                        e.printStackTrace()
+                        displayToast("Failed to save file")
+                    }
+
+                }else{
+                    displayToast("Filename cannot be empty")
+                }
+                dialog.dismiss()
+            }
+            .setNegativeButton("Cancel") {_,_ -> }
+            .show()
+    }
+
+    private fun displayToast(message: String){
+        Toast.makeText(context, message, Toast.LENGTH_LONG).show()
+    }
     private fun shareText(){
        startActivity(getShareIntent())
     }

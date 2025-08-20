@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="24dp">
+
+    <!-- Text field for the file name -->
+    <EditText
+        android:id="@+id/filename_edit_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:hint="Enter filename"
+        android:inputType="text" />
+
+    <!-- Container for the Save and Cancel buttons -->
+<!--    <LinearLayout-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:gravity="end"-->
+<!--        android:orientation="horizontal">-->
+
+<!--        &lt;!&ndash; Cancel button &ndash;&gt;-->
+<!--        <Button-->
+<!--            android:id="@+id/cancel_button"-->
+<!--            style="?android:attr/buttonBarButtonStyle"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginEnd="8dp"-->
+<!--            android:text="Cancel" />-->
+
+<!--        &lt;!&ndash; Save button &ndash;&gt;-->
+<!--        <Button-->
+<!--            android:id="@+id/save_button"-->
+<!--            style="?android:attr/buttonBarButtonStyle"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="Save" />-->
+
+<!--    </LinearLayout>-->
+
+</LinearLayout>
