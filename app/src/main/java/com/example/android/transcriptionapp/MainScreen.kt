@@ -3,6 +3,7 @@ package com.example.android.transcriptionapp
 import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -11,9 +12,13 @@ import android.widget.ArrayAdapter
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
-import androidx.navigation.fragment.findNavController
+import androidx.lifecycle.lifecycleScope
 import com.example.android.transcriptionapp.databinding.FragmentFirstBinding
-import org.w3c.dom.Text
+import com.google.api.gax.core.FixedCredentialsProvider
+import com.google.auth.oauth2.ServiceAccountCredentials
+import com.google.cloud.speech.v1.SpeechClient
+import com.google.cloud.speech.v1.SpeechSettings
+import kotlinx.coroutines.launch
 import java.io.File
 import java.io.FileOutputStream
 
@@ -27,6 +32,10 @@ class MainScreen : Fragment() {
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
+    private lateinit var speechClient: SpeechClient
+    private lateinit var speechToText: SpeechToText
+    private var isRecording =  false
+    private val TAG = "MainScreen"
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -34,8 +43,23 @@ class MainScreen : Fragment() {
     ): View {
 
         _binding = FragmentFirstBinding.inflate(inflater, container, false)
+        speechClient = initializeSpeechClient()
+        speechToText = SpeechToText(requireContext(), speechClient){
+            result-> binding.editTextTextMultiLine.setText(result)
+        }
         val micBtn = binding.micBtn
         micBtn.setOnClickListener{view:View ->
+
+            if(!isRecording){
+                speechToText.startRecording()
+                binding.recordHint.text = requireContext().getText(R.string.tap_to_stop_recording)
+            } else {
+                lifecycleScope.launch {
+                speechToText.stopRecording()
+                binding.recordHint.text = requireContext().getText(R.string.tap_to_start_recording)
+                }
+            }
+            isRecording = !isRecording
             view.isActivated = !view.isActivated
         }
 
@@ -114,7 +138,29 @@ class MainScreen : Fragment() {
     }
 
     override fun onDestroyView() {
+        shutdownSpeechClient()
         super.onDestroyView()
         _binding = null
+    }
+
+    private fun initializeSpeechClient(): SpeechClient {
+        // Run this in an appropriate lifecycle method (e.g., onCreate)
+        val credentialsStream = requireContext().assets.open("translation-app-33286-e4764a02ebcb.json")
+        val credentials = ServiceAccountCredentials.fromStream(credentialsStream)
+        val credentialsProvider = FixedCredentialsProvider.create(credentials)
+
+        val settings = SpeechSettings.newBuilder()
+            .setCredentialsProvider(credentialsProvider)
+            .build()
+
+        // Initialise the client outside of the transcribe function
+        return SpeechClient.create(settings)
+    }
+
+    private fun shutdownSpeechClient() {
+        // Run this in an appropriate lifecycle method (e.g., onDestroy)
+        speechClient.close()
+        // Optional: Wait for graceful shutdown (better for long-running apps)
+        // speechClient.awaitTermination(5, TimeUnit.SECONDS)
     }
 }

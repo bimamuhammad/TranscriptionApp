@@ -43,10 +43,21 @@
         libero vel nunc consequat, quis tincidunt nisl eleifend. Cras bibendum enim a justo luctus
         vestibulum. Fusce dictum libero quis erat maximus, vitae volutpat diam dignissim.
     </string>
-    <string name="transcribed_text_appears_here">Transcribed text appears here ...</string>
+    <string name="transcribed_text_appears_here">Transcribed text appears here …</string>
     <string-array name="languages">
         <item>English</item>
         <item>Arabic</item>
         <item>Spanish</item>
     </string-array>
+
+
+    <string name="permissionDenied">Permission not granted</string>
+    <string name="errorPermissionNotGranted">Error: Recording permissions not granted.</string>
+    <string name="alreadyRecording">Already recording.</string>
+    <string name="recordingStarted">Recording started …</string>
+    <string name="notRecording">Not Recording.</string>
+    <string name="transcribing">Recording stopped. Transcribing…</string>
+    <string name="prepareFailure">prepare() failed</string>
+    <string name="tap_to_start_recording">Tap to Start Recording</string>
+    <string name="tap_to_stop_recording">Tap to Stop Recording</string>
 </resources>
